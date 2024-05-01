@@ -1,3 +1,22 @@
-<h1>Welcome to your library project</h1>
-<p>Create your package using @sveltejs/package and preview/showcase your work with SvelteKit</p>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+    import Title from "../components/sys/AppTitle.svelte";
+    import Footer from "../components/sys/AppFooter.svelte";
+    import IndexMain from "../components/index/Main.svelte";
+</script>
+
+<div class="container app">
+    <!-- App Title -->
+    <div class="app app-title">
+        <Title />
+    </div>
+
+    <!-- App MainBody -->
+    <div class="app app-main">
+        <IndexMain />
+    </div>
+
+    <!-- App Footer -->
+    <div class="app app-footer">
+        <Footer />
+    </div>
+</div>
