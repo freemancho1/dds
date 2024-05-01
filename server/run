@@ -1,0 +1,17 @@
+#!/home/freeman/anaconda3/envs/ddsp312/bin/python
+import argparse
+
+from dds.server import app, app_init
+
+
+def main(port=None):
+    app_init()
+    app.run("0.0.0.0", port=port)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Run Flask Apps.')
+    parser.add_argument('--port', '-p', type=int, default=11000, help='')
+
+    args = parser.parse_args()
+    main(port=args.port)

@@ -1,0 +1,18 @@
+# Service
+pandas
+scikit-learn
+joblib
+
+# Legacy
+dotmap
+
+# Flask
+Flask
+Flask-RESTful
+Flask-Login
+Flask-Mail
+Flask-Cors
+tornado
+
+# utils
+email-validator
