@@ -1,11 +1,11 @@
 <script>
     export let jsonData;
-    export let isObject;
+    // export let isObject;
     const jsonList = Object.entries(jsonData)
 
-    // const isObject = (obj) => {
-    //     return typeof obj === 'object' && obj !== null;
-    // }
+    const isObject = (obj) => {
+        return typeof obj === 'object' && obj !== null;
+    }
 </script>
 
 <ul class="list-group list-group-flush">
