@@ -4,6 +4,20 @@ Everything you need to build a Svelte library, powered by [`create-svelte`](http
 
 Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
 
+## Add fontawesome
+
+Install fontawesome-free
+
+```bash
+npm i --save @fortawesome/fontawesome-free
+```
+
+And add styles in the `app.html`
+
+```html
+<link href="../node_modules/@fortawesome/fontawesome-free/css/all.css" rel="stylesheet">
+```
+
 ## Creating a project
 
 If you're seeing this, you've probably already done this step. Congrats!
