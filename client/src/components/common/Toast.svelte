@@ -10,6 +10,8 @@
             message: "The facility data for predicting construction costs hasn't been prepared yet."
         },
     }
+
+    const ta = toastArgs[id];
 </script>
 
 <div 
@@ -22,16 +24,16 @@
         aria-live="assertive" aria-atomic="true" data-bs-autohide="false" 
     >
         <div class="toast-header">
-            <i class="{toastArgs[id].img} img" style:color={toastArgs[id].color}></i>
-            <strong class="me-auto" style:color={toastArgs[id].color}>{toastArgs[id].title}</strong>
-            <small>{toastArgs[id].subTitle}</small>
+            <i class="{ta.img} img" style:color={ta.color}></i>
+            <strong class="me-auto" style:color={ta.color}>{ta.title}</strong>
+            <small>{ta.subTitle}</small>
             <button 
                 type="button" class="btn-close"
                 data-bs-dismiss="toast" aria-label="Close">
             </button>
         </div>
         <div class="toast-body">
-            {toastArgs[id].message}
+            {ta.message}
         </div>
     </div>
 </div>
