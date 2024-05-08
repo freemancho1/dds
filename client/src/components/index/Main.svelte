@@ -2,34 +2,63 @@
     import ButtonGroup from "./ButtonGroup.svelte";
     import JsonToHtml from "./JsonToHtml.svelte";
     import Toast from "../common/Toast.svelte";
+    import axios from "axios";
 
-    const reqRePredict = () => {
-        console.log('Click reqRePredict');
-    }
+    let samples;
+    let predicts;
 
     async function getSampleData() {
-        const res = await fetch('http://localhost:11000/samples');
-        const jsonDatas = res.json()
-        if (res.ok) {
-            return jsonDatas;
-        } else {
-            throw new Error(jsonDatas)
-        }
+        await axios.get('http://localhost:11000/samples')
+            .then(res => {
+                samples = res.data;
+            })
+            .catch(error => {
+                console.log("Error:", error);
+            });
     }
-    let promise;
-    const getSamples = () => promise = getSampleData();
+    const getSamples = () => {
+        samples = undefined;
+        getSampleData();
+    }
 
-    async function predict() {
-        const liveToast = bootstrap.Toast.getOrCreateInstance(
-            document.getElementById("liveToast"));
-        liveToast.show();
-        // console.log(promise);
+    async function reqPredictData() {
+        await axios.post("http://localhost:11000/predict", samples)
+            .then(res => {
+                predicts = res.data;
+            })
+            .catch(error => {
+                console.log("Error:", error);
+            });
     }
     const reqPredict = () => {
-        const liveToast = bootstrap.Toast.getOrCreateInstance(
-            document.getElementById("liveToast"));
-        liveToast.show();
-        console.log(promise);
+        if (samples === undefined) {
+            const liveToast = bootstrap.Toast.getOrCreateInstance(
+                document.getElementById("liveToast"));
+            liveToast.show();
+        } else {
+            predicts = undefined;
+            reqPredictData();
+        }
+    }
+
+    async function reqRePredictData() {
+        await axios.post("http://localhost:11000/re_predict", samples)
+            .then(res => {
+                predicts = res.data;
+            })
+            .catch(error => {
+                console.log("Error:", error);
+            });
+    }
+    const reqRePredict = () => {
+        if (samples === undefined) {
+            const liveToast = bootstrap.Toast.getOrCreateInstance(
+                document.getElementById("liveToast"));
+            liveToast.show();
+        } else {
+            predicts = undefined;
+            reqRePredictData();
+        }
     }
 
     let menuInfos = [
@@ -37,26 +66,19 @@
         {id: "reqPredict", color: "btn-primary", click: reqPredict, label: "Req Predict"},
         {id: "reqRePredict", color: "btn-primary", click: reqRePredict, label: "reqRe Predict"},
     ]
-    let toastArgs = {
-        title: "Information:", subTitle: "", message: "The facility data for predicting construction costs hasn't been prepared yet.",
-    }
+    // let toastArgs = {
+    //     title: "Information:", subTitle: "", message: "The facility data for predicting construction costs hasn't been prepared yet.",
+    // }
 </script>
 
 <div class="row justify-content-around">
     <!-- Input JSON data -->
     <div class="col-4">
-        <i class="fa-solid fa-circle-info"></i>
-        {#await promise}
-            <p>...loading</p>
-        {:then jsonDatas} 
-            {#if jsonDatas === undefined}
-                <p>Click "Get Samples" button.</p>
-            {:else}
-                <JsonToHtml {jsonDatas} />  
-            {/if}
-        {:catch error}
-            <p style="color: red;">{error.message}</p>
-        {/await}
+        {#if samples === undefined}
+            <p>Click "Get Samples" button.</p>
+        {:else}
+            <JsonToHtml jsonDatas={samples} />  
+        {/if}
     </div>
     <!-- Action Buttons -->
     <div class="col-2">
@@ -64,8 +86,12 @@
     </div>
     <!-- Predict Result JSON data -->
     <div class="col-4">
-        <button class="btn btn-success">Success</button>
+        {#if predicts === undefined}
+            <p></p>
+        {:else}
+            <JsonToHtml jsonDatas={predicts} />  
+        {/if}
     </div>
 </div>
 
-<Toast />
+<Toast id="reqPredictErr"/>

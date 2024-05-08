@@ -12,24 +12,30 @@
     const isObject = (obj) => typeof obj === 'object' && obj !== null;
 </script>
 
-<button class:expanded on:click={toggle}>{key} : &#123;</button>
+{#if isObject(value)}
+    <button class:expanded on:click={toggle}>{key} : &#123;</button>
 
-{#if expanded}
-    <ul transition:slide={{ duration: 300 }} class="jth-group">
-        {#each values as [k, v]}
-            <li>
-                {#if isObject(v)}
-                    <svelte:self key={k} value={v} />
-                {:else}
-                    <div class="d-flex justify-content-between jth-body">
-                        <div>{k} :</div><div>{v}</div>
-                    </div>
-                {/if}
-            </li>
-        {/each}
-    </ul>
+    {#if expanded}
+        <ul transition:slide={{ duration: 300 }} class="jth-group">
+            {#each values as [k, v]}
+                <li>
+                    {#if isObject(v)}
+                        <svelte:self key={k} value={v} />
+                    {:else}
+                        <div class="d-flex justify-content-between jth-body">
+                            <div>{k} :</div><div>{v}</div>
+                        </div>
+                    {/if}
+                </li>
+            {/each}
+        </ul>
+    {/if}
+    <div class="jth-body-buttom">&#125;,</div>
+{:else}
+    <div class="d-flex justify-content-between jth-body">
+        <div>{key} :</div><div>{value}</div>
+    </div>
 {/if}
-<div class="jth-body-buttom">&#125;,</div>
 
 <style>
     button {

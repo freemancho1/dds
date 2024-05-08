@@ -1,7 +1,9 @@
 <script>
+    import { onMount } from "svelte";
+
 	import MakeHtml from "./MakeHtml.svelte";
     export let jsonDatas;
-    const jsonList = Object.entries(jsonDatas)
+    const jsonList = Object.entries(jsonDatas);
 </script>
 
 <div class="jth-top">&#123;</div>
