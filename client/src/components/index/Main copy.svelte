@@ -3,7 +3,6 @@
     import JsonToHtml from "./JsonToHtml.svelte";
     import Toast from "../common/Toast.svelte";
     import axios from "axios";
-    import { error } from "@sveltejs/kit";
 
     let samples;
     let predicts;
@@ -78,13 +77,7 @@
         {#if samples === undefined}
             <p>Click "Get Samples" button.</p>
         {:else}
-            {#await samples}
-                <p>...waiting</p>
-            {:then samples}
-                <JsonToHtml jsonDatas={samples} />  
-            {:catch error}
-                <p style:color="red">{error.message}</p>
-            {/await}
+            <JsonToHtml jsonDatas={samples} />  
         {/if}
     </div>
     <!-- Action Buttons -->
