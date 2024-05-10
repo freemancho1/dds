@@ -4,6 +4,11 @@
 	import MakeHtml from "./MakeHtml.svelte";
     export let jsonDatas;
     const jsonList = Object.entries(jsonDatas);
+
+    onMount(() => {
+        // console.log("JsonToHtml");
+        // console.log(jsonDatas);
+    });
 </script>
 
 <div class="jth-top">&#123;</div>

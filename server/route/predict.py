@@ -17,6 +17,7 @@ class PredictRoute(MethodView):
             # Exception handling is ambiguous
             # input_json = request.json
             input_data = request.get_data()
+            print(f"+++++++++\n{input_data}");
             input_json = json.loads(input_data)
         except ValueError as ve:
             return route_error_handle('web.bad_json', str(ve), hc.BR, ve)

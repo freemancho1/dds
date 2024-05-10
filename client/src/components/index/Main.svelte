@@ -3,33 +3,48 @@
     import JsonToHtml from "./JsonToHtml.svelte";
     import Toast from "../common/Toast.svelte";
     import axios from "axios";
-    import { error } from "@sveltejs/kit";
 
+    const url = {
+        jsonHeader: {"Content-Type": "application/json"},
+        sample: "http://localhost:11000/samples",
+        predict: "http://localhost:11000/predict",
+        rePredict: "http://localhost:11000/re_predict",
+    }
     let samples;
+    let samplesData;
     let predicts;
 
     async function getSampleData() {
-        await axios.get('http://localhost:11000/samples')
-            .then(res => {
-                return res.data;
-            })
-            .catch(error => {
-                throw new Error(error);
-            });
+        const response = await fetch(url.sample, {
+            method: 'GET',
+            headers: url.jsonHeader,
+            body: undefined,
+        });
+        const data = response.json();
+
+        if (response.ok) {
+            return data;
+        } else {
+            throw new Error(data);
+        }
     }
-    const getSamples = () => {
-        // samples = undefined;
-        samples = getSampleData();
-    }
+    const getSamples = () => samples = getSampleData();
 
     async function reqPredictData() {
-        await axios.post("http://localhost:11000/predict", samples)
-            .then(res => {
-                predicts = res.data;
-            })
-            .catch(error => {
-                console.log("Error:", error);
-            });
+        console.log(`reqPredict: ${samplesData}`);
+        console.log(samplesData);
+        const response = await fetch(url.predict, {
+            method: 'POST',
+            headers: url.jsonHeader,
+            body: samplesData,
+        });
+        const data = response.json();
+
+        if (response.ok) {
+            return data;
+        } else {
+            throw new Error(data);
+        }
     }
     const reqPredict = () => {
         if (samples === undefined) {
@@ -37,8 +52,8 @@
                 document.getElementById("liveToast"));
             liveToast.show();
         } else {
-            predicts = undefined;
-            reqPredictData();
+            // predicts = undefined;
+            predicts = reqPredictData();
         }
     }
 
@@ -67,9 +82,6 @@
         {id: "reqPredict", color: "btn-primary", click: reqPredict, label: "Req Predict"},
         {id: "reqRePredict", color: "btn-primary", click: reqRePredict, label: "reqRe Predict"},
     ]
-    // let toastArgs = {
-    //     title: "Information:", subTitle: "", message: "The facility data for predicting construction costs hasn't been prepared yet.",
-    // }
 </script>
 
 <div class="row justify-content-around">
@@ -80,8 +92,11 @@
         {:else}
             {#await samples}
                 <p>...waiting</p>
-            {:then samples}
-                <JsonToHtml jsonDatas={samples} />  
+            {:then mydata}
+                {samplesData = mydata}
+                {console.log(`then: ${samplesData}`)}
+                {console.log(samplesData)}
+                <JsonToHtml jsonDatas={mydata} />  
             {:catch error}
                 <p style:color="red">{error.message}</p>
             {/await}
@@ -96,7 +111,13 @@
         {#if predicts === undefined}
             <p></p>
         {:else}
-            <JsonToHtml jsonDatas={predicts} />  
+            {#await predicts}
+                <p>...waiting</p>
+            {:then data}
+                <JsonToHtml jsonDatas={data} />  
+            {:catch error}
+                <p style:color="red">{error.message}</p>
+            {/await}
         {/if}
     </div>
 </div>
