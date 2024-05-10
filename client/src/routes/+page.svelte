@@ -1,7 +1,7 @@
 <script>
     import Title from "../components/sys/AppTitle.svelte";
     import Footer from "../components/sys/AppFooter.svelte";
-    import IndexMain from "../components/index/Main.svelte";
+    import AppBody from "./AppBody.svelte";
 </script>
 
 <div class="container app">
@@ -11,8 +11,8 @@
     </div>
 
     <!-- App MainBody -->
-    <div class="app app-main">
-        <IndexMain />
+    <div class="app app-body">
+        <AppBody />
     </div>
 
     <!-- App Footer -->
