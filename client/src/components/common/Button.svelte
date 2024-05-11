@@ -1,9 +1,5 @@
 <script>
-    import { slide } from "svelte/transition";
     export let menu;
-
-    let expanded = false;
-    const toggle = () => expanded = !expanded;
 </script>
 
 <button 
